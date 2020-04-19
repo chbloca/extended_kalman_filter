@@ -79,14 +79,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         double y = rho * sin(phi);
         double vx = rho_dot * cos(phi);
         double vy = rho_dot * sin(phi);
-        cout << "First measurement is from radar\n";
         ekf_.x_ << x, y, vx, vy;
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       // TODO: Initialize state.
         double x = measurement_pack.raw_measurements_[0];
         double y = measurement_pack.raw_measurements_[1];
-        cout << "First measurement is from LiDAR\n";
         ekf_.x_ << x, y, 0, 0;
     }
     previous_timestamp_ = measurement_pack.timestamp_;
@@ -106,6 +104,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
    */
   double dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;
+  previous_timestamp_ = measurement_pack.timestamp_;
 
   ekf_.F_ = MatrixXd(4, 4);
   ekf_.F_ << 1, 0, dt, 0,
