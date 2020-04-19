@@ -67,33 +67,26 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     ekf_.x_ = VectorXd(4);
     ekf_.x_ << 1, 1, 1, 1;
 
-
-    MatrixXd F(4, 4);
-    F << 1, 0, 0, 0,
-         0, 1, 0, 0,
-         0, 0, 1, 0,
-         0, 0, 0, 1;
-
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       // TODO: Convert radar from polar to cartesian coordinates
       //         and initialize state.
-        float rho = measurement_pack.raw_measurements_[0];
-        float phi = measurement_pack.raw_measurements_[1];
-        float rho_dot = measurement_pack.raw_measurements_[2];
+        double rho = measurement_pack.raw_measurements_[0];
+        double phi = measurement_pack.raw_measurements_[1];
+        double rho_dot = measurement_pack.raw_measurements_[2];
 
         // from polar to cartesian coordinates
-        float x = rho * cos(phi);
-        float y = rho * sin(phi);
-        float vx = rho_dot * cos(phi);
-        float vy = rho_dot * sin(phi);
-        cout << "First radar measurement\n";
+        double x = rho * cos(phi);
+        double y = rho * sin(phi);
+        double vx = rho_dot * cos(phi);
+        double vy = rho_dot * sin(phi);
+        cout << "First measurement is from radar\n";
         ekf_.x_ << x, y, vx, vy;
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       // TODO: Initialize state.
-        float x = measurement_pack.raw_measurements_[0];
-        float y = measurement_pack.raw_measurements_[1];
-        cout << "First LiDAR measurement\n";
+        double x = measurement_pack.raw_measurements_[0];
+        double y = measurement_pack.raw_measurements_[1];
+        cout << "First measurement is from LiDAR\n";
         ekf_.x_ << x, y, 0, 0;
     }
     previous_timestamp_ = measurement_pack.timestamp_;
@@ -112,7 +105,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * TODO: Update the process noise covariance matrix.
    * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
    */
-  float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;
+  double dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;
 
   ekf_.F_ = MatrixXd(4, 4);
   ekf_.F_ << 1, 0, dt, 0,
@@ -120,11 +113,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
              0, 0, 1, 0,
              0, 0, 0, 1;
 
-  float dt2 = dt * dt;
-  float dt3 = dt2 * dt;
-  float dt4 = dt3 * dt;
-  float noise_ax = 9.0;
-  float noise_ay = 9.0;
+  double dt2 = dt * dt;
+  double dt3 = dt2 * dt;
+  double dt4 = dt3 * dt;
+  double noise_ax = 9.0;
+  double noise_ay = 9.0;
 
   ekf_.Q_ = MatrixXd(4, 4);
   ekf_.Q_ << dt4 / 4 * noise_ax, 0, dt3 / 2 * noise_ax, 0,
