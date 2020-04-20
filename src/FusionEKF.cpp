@@ -31,7 +31,6 @@ FusionEKF::FusionEKF() {
   R_radar_ << 0.09, 0, 0,
               0, 0.0009, 0,
               0, 0, 0.09;
-
   /**
    * TODO: Finish initializing the FusionEKF.
    * TODO: Set the process and measurement noises
@@ -140,7 +139,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // TODO: Radar updates
       ekf_.H_ = tools.CalculateJacobian(ekf_.x_);
       ekf_.R_ = R_radar_;
-      ekf_.Update(measurement_pack.raw_measurements_);
+      ekf_.UpdateEKF(measurement_pack.raw_measurements_);
   } else {
     // TODO: Laser updates
       ekf_.H_ = H_laser_;
