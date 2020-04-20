@@ -46,6 +46,8 @@ Here is the main protocol that main.cpp uses for uWebSocketIO in communicating w
 In the simulation, the output plot of the EKF looks like the following way:
 Lidar measurements are red circles, radar measurements are blue circles with an arrow pointing in the direction of the observed angle, and estimation markers are green triangles.
 
+![Image 1](https://github.com/chbloca/extended_kalman_filter/blob/master/Docs/Screenshot.jpg)
+
 ---
 
 ## Other Important Dependencies
